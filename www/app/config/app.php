@@ -191,4 +191,9 @@ return array(
 
 	),
 
+	'mailchimp' => array(
+		'api'	=> '',
+		'notify_list_id' => '69f31c537d'
+	),
+
 );

@@ -15,3 +15,14 @@ Route::get('/', function()
 {
 	return View::make('hello');
 });
+
+
+Route::post('/notify-me', function(){
+
+	$mailchimp = new Mailchimp(Config::get('app.mailchimp.api'));
+
+	$mailchimp->lists->subscribe(Config::get('app.mailchimp.notify_list_id'), Input::all(), Input::all());
+
+	return Redirect::to('/')->with(array('success' => true));
+
+});
