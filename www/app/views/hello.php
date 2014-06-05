@@ -96,8 +96,8 @@
 			<p class="optional">
 				Optional:
 			</p>
-			<input class="optional" id="firstname" name="firstname" type="text" placeholder="First Name" >
-			<input class="optional" id="lastname" name="lastname" type="text" placeholder="Last Name">
+			<input class="optional" id="fname" name="fname" type="text" placeholder="First Name" >
+			<input class="optional" id="lname" name="lname" type="text" placeholder="Last Name">
 
 
 
