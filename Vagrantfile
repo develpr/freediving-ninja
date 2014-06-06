@@ -1,7 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-$project_name = 'site'
+$project_name = 'freediving'
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
@@ -12,7 +12,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   
    config.hostmanager.enabled = true
    config.hostmanager.manage_host = true
-   config.hostmanager.aliases = %w(www.#{$project_name}.dev)
+   config.hostmanager.aliases = %w(#{$project_name}.dev)
 
   config.vm.hostname = "#{$project_name}.dev"
 
