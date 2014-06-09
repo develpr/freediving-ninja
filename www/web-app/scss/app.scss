@@ -13,7 +13,7 @@
 //   "foundation/components/dropdown",
 //   "foundation/components/dropdown-buttons",
 //   "foundation/components/flex-video",
-//   "foundation/components/forms",
+@import "foundation/components/forms";
 @import "foundation/components/grid";
 //   "foundation/components/inline-lists",
 //   "foundation/components/joyride",
@@ -35,6 +35,25 @@
 //   "foundation/components/thumbs",
 //   "foundation/components/tooltips",
 //   "foundation/components/top-bar",
-//   "foundation/components/type",
+@import "foundation/components/type";
 //   "foundation/components/offcanvas",
 @import "foundation/components/visibility";
+
+
+
+html{
+	height:100%;
+}
+body, html{
+	height:100%;
+	background: #4f7ebc; /* Old browsers */
+	background: -moz-linear-gradient(top, #4f7ebc 0%, #2989d8 32%, #207cca 56%, #1e5799 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4f7ebc), color-stop(32%,#2989d8), color-stop(56%,#207cca), color-stop(100%,#1e5799)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #4f7ebc 0%,#2989d8 32%,#207cca 56%,#1e5799 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #4f7ebc 0%,#2989d8 32%,#207cca 56%,#1e5799 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #4f7ebc 0%,#2989d8 32%,#207cca 56%,#1e5799 100%); /* IE10+ */
+	background: linear-gradient(to bottom, #4f7ebc 0%,#2989d8 32%,#207cca 56%,#1e5799 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4f7ebc', endColorstr='#1e5799',GradientType=0 ); /* IE6-9 */
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+}
