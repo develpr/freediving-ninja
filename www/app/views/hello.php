@@ -11,31 +11,31 @@
 <body>
 
 	<div class="row">		
-		<p class="columns small-12">
+		<p class="columns small-12 large-7 small-centered" style="margin-top:3em; margin-bottom:1em;">
 			Interested in tracking your freediving progress over time or comparing and analyzing data with others divers? Sign up below to be notified of updates to <strong>freediving.ninja</strong>.
 		</p>
 	</div>
 	
 	<?php if(Session::get('success')): ?>
 	<div class="row">	
-		<p class="notice">
+		<p class="notice small-12 large-7 small-centered">
 			<strong>Thanks for your interest! Talk with you soon!</strong>
 		</p>
 	</div>
 	<?php endif; ?>
 	
 	<form id="signup" class="row" action="/notify-me" method="post">
-		<div class="columns small-12">
+		<div class="columns  small-12 large-7 small-centered">
 			<input id="email" name="email" type="email" placeholder="Email" autofocus required>
-			<label>Optional</label>
+			<label class="optional">Optional</label>
 			<input class="optional" id="fname" name="fname" type="text" placeholder="First Name">
 			<input class="optional" id="lname" name="lname" type="text" placeholder="Last Name">
-			<input type="submit" id="submit" class="button" value="Register">
+			<input type="submit" id="submit" class="button tiny" style="font-weight:bolder;" value="Register">
 		</div>
 	</form>
 
 	<div class="row">
-		<div class="large-8 small-10 small-centered columns">
+		<div class="large-4 small-10 small-centered columns">
 		  	<img src="/img/image.png" alt="Freediving Ninja" />
 		</div>
 	</div>
@@ -52,5 +52,12 @@
 </script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="/js/build/app.js"></script>
+<script>
+	$('#email').on('keyup', function(){
+		if($.trim($(this).val()).length > 0){
+			$('.optional').fadeIn('slow');
+		}
+	});
+</script>
 </body>
 </html>

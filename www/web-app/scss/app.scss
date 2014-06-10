@@ -1,6 +1,6 @@
-//@import "settings";
+@import "settings";
 //@import "foundation";
-
+$base-font-size: 110%;
 // Or selectively include components
 
 //   "foundation/components/accordion",
@@ -36,13 +36,13 @@
 //   "foundation/components/tooltips",
 //   "foundation/components/top-bar",
 @import "foundation/components/type";
-//   "foundation/components/offcanvas",
+@import "foundation/components/offcanvas";
 @import "foundation/components/visibility";
 
 
 
 html{
-	height:100%;
+  height:100%;
 }
 body, html{
 	height:100%;
@@ -58,6 +58,14 @@ body, html{
 	background-attachment: fixed;
 }
 
+body{
+  border-top:5px solid white;
+}
+
 .button{
 	@include button(rem-calc(12), #fff, false, false, false, false);
+}
+
+.optional, input.optional{
+  display:none;
 }

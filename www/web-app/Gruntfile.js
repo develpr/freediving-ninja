@@ -17,18 +17,30 @@ module.exports = function(grunt) {
 		},
 
 		watch: {
-			grunt: { files: ['Gruntfile.js'] },
-
-			src: {
-				files: 'scss/**/*.scss',
-				tasks: ['sass']
+			options: {
+				livereload: true
 			},
-
-			javascript: {
-				files: 'js/app.js',
-				tasks: ['concat', 'uglify']
+			src: {
+				files: ['lib/*.js', 'scss/**/*.scss', 'js/app.js'],
+				tasks: ['default']
 			}
 		},
+
+//		watch: {
+//			grunt: { files: ['Gruntfile.js'] },
+//
+//			tasks: ['build'],
+//
+//			src: {
+//				files: 'scss/**/*.scss',
+//				tasks: ['sass']
+//			},
+//
+//			javascript: {
+//				files: 'js/app.js',
+//				tasks: ['concat', 'uglify']
+//			}
+//		},
 
 		concat: {
 			dist: {
@@ -95,6 +107,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 
-	grunt.registerTask('build', ['sass']);
-	grunt.registerTask('default', ['copy', 'build','concat','uglify', 'sass', 'cssmin']);
+	grunt.registerTask('build', ['copy', 'sass', 'concat','uglify', 'cssmin']);
+	grunt.registerTask('default', ['build']);
 }
