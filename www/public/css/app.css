@@ -1914,3 +1914,29 @@ body, html {
   /* IE6-9 */
   background-repeat: no-repeat;
   background-attachment: fixed; }
+
+.button {
+  border-style: solid;
+  border-width: 0px;
+  cursor: pointer;
+  font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+  font-weight: normal;
+  line-height: normal;
+  margin: 0 0 1.25rem;
+  position: relative;
+  text-decoration: none;
+  text-align: center;
+  -webkit-appearance: none;
+  -webkit-border-radius: 0;
+  display: inline-block;
+  padding-top: 0.75rem;
+  padding-right: 1.5rem;
+  padding-bottom: 0.8125rem;
+  padding-left: 1.5rem;
+  background-color: #fff;
+  border-color: #cccccc;
+  color: #333; }
+  .button:hover, .button:focus {
+    background-color: #cccccc; }
+  .button:hover, .button:focus {
+    color: #333; }

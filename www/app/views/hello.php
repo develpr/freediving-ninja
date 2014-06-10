@@ -27,9 +27,10 @@
 	<form id="signup" class="row" action="/notify-me" method="post">
 		<div class="columns small-12">
 			<input id="email" name="email" type="email" placeholder="Email" autofocus required>
+			<label>Optional</label>
 			<input class="optional" id="fname" name="fname" type="text" placeholder="First Name">
 			<input class="optional" id="lname" name="lname" type="text" placeholder="Last Name">
-			<input type="submit" id="submit" value="Register">
+			<input type="submit" id="submit" class="button" value="Register">
 		</div>
 	</form>
 
