@@ -11,9 +11,9 @@
 <body>
 
 	<div class="row">		
-		<p class="columns small-12 large-7 small-centered" style="margin-top:3em; margin-bottom:1em;">
-			Interested in tracking your freediving progress over time or comparing and analyzing data with others divers? Sign up below to be notified of updates to <strong>freediving.ninja</strong>.
-		</p>
+		<div class="columns small-12 large-7 small-centered" style="margin-top:3em; margin-bottom:1em;">
+			<h5>Interested in tracking your freediving progress over time or comparing and analyzing data with others divers? Sign up below to be notified of updates to <strong>freediving.ninja</strong>.</h5>
+		</div>
 	</div>
 	
 	<?php if(Session::get('success')): ?>
