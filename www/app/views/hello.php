@@ -53,8 +53,8 @@
 	ga('require', 'displayfeatures');
 	ga('send', 'pageview');
 </script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="/js/build/app.js"></script>
+<script async src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script async src="/js/build/app.js"></script>
 <script>
 	$('#email').on('keyup', function(){
 		if($.trim($(this).val()).length > 0){
