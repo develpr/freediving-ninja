@@ -69,7 +69,7 @@ function sampleDive()
 		var previousAcceleration = diveState.acceleration;
 		var previousSpeed = diveState.speed;
 		
-		var depth = 10;
+		var depth = -1* ((Math.random() * 6) + 5);
 		var speed = 0;
 		var acceleration = 0;
     
