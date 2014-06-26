@@ -28,7 +28,7 @@
 	<?php endif; ?>
 	
 	<form id="signup" class="row" action="/notify-me" method="post">
-		<div class="columns  small-12 large-7 small-centered">
+		<div class="columns small-12 large-7 small-centered">
 			<input id="email" name="email" type="email" placeholder="Email" autofocus required>
 			<label class="optional">Optional</label>
 			<input class="optional" id="fname" name="fname" type="text" placeholder="First Name">
@@ -36,6 +36,10 @@
 			<input type="submit" id="submit" class="button tiny" style="font-weight:bolder;" value="Register">
 		</div>
 	</form>
+	
+	<div class="row">
+		<div id="chartdiv" class="large-7 columns small-centered" style="height:300px;"></div>
+	</div>
 
 	<div class="row">
 		<div class="large-4 small-10 small-centered columns">
@@ -53,7 +57,7 @@
 	ga('require', 'displayfeatures');
 	ga('send', 'pageview');
 </script>
-<script async src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script async src="/js/build/app.js"></script>
 <script>
 	$('#email').on('keyup', function(){
