@@ -1,4 +1,4 @@
-function sampleDive()
+function SampleDive()
 {
 	var diveData = {};	
 	
@@ -7,16 +7,20 @@ function sampleDive()
 		diveData.totalDiveTimeMinutes = (Math.random() * 3.5) + 0.5;
 		diveData.totalDiveTimeSeconds = Math.floor(60 * diveData.totalDiveTimeMinutes);
 		//How deep are we diving?
-		diveData.maxDepth = Math.floor((Math.random() * 50) + 20);
+		diveData.maxDepth = -1 * Math.floor((Math.random() * 50) + 20);
 		//We'll either have an "enjoyable" dive where we dive down not super deep, then swim around a bit, then come up
-		diveData.descentTime = Math.floor((Math.random() * 30) + 10);
-		diveData.ascentTime = diveData.descentTime * 0.7;
-		diveData.bottomTime = 100 - diveData.descentTime - diveData.ascentTime;
+		diveData.descentRatio = Math.floor((Math.random() * 30) + 10);
+		diveData.ascentRatio = diveData.descentRatio * 0.7;
+		diveData.bottomRatio = 100 - diveData.descentRatio - diveData.ascentRatio;
+		diveData.startingDepth = 0;
+		diveData.startingTime = 0;
+		diveData.endingDepth = 0;
+
 		//Or we'll do a "deep dive" where we spend all time on the descent/ascent
 		if (Math.random() < 0.3) {
-		    diveData.descentTime = 60;
-		    diveData.ascentTime = 38;
-		    diveData.bottomTime = 2;
+		    diveData.descentRatio = 60;
+		    diveData.ascentRatio = 38;
+		    diveData.bottomRatio = 2;
 		    diveData.maxDepth = diveData.maxDepth * 3;
 		}	
 	}
@@ -29,7 +33,6 @@ function sampleDive()
 	            empty = false;
 	    }		
 		if(empty == true){
-			console.log("generating");
 			this.generateRandomProfile();
 		}
 				
@@ -42,12 +45,11 @@ function sampleDive()
 	
 	this.getDivePoints = function(){
 		//add a few gentle starting points
-		var times = [{"time": 0,"depth": 0},{"time": 1,"depth": -1},{"time": 2,"depth": -1},{"time": 3,"depth": -2},{"time": 4,"depth": -3}];
-		
+
 		//initial dive state
-		var diveState = { speed : -0.75, acceloration : -.1, depth:-3 };
-		
-		for (currentTime = 5; currentTime <= diveData.totalDiveTimeSeconds; currentTime += 1) {
+		var diveState = { speed : -0.05, acceloration : -.1, depth:0 };
+		var times = [];
+		for (currentTime = 0; currentTime <= diveData.totalDiveTimeSeconds; currentTime += 1) {
 			
 			diveState.time = currentTime;			
 			diveState = this.calculateDivePoint(diveState);
@@ -69,7 +71,7 @@ function sampleDive()
 		var previousAcceleration = diveState.acceleration;
 		var previousSpeed = diveState.speed;
 		
-		var depth = -1* ((Math.random() * 6) + 5);
+		var depth = this.currentEstimatedDepth(diveState.time);
 		var speed = 0;
 		var acceleration = 0;
     
@@ -80,6 +82,44 @@ function sampleDive()
 			"acceleration":acceleration
 	    };
 	};
+
+	this.currentEstimatedDepth = function(time) {
+
+		var percentComplete = time / diveData.totalDiveTimeSeconds * 100;
+
+		console.log(percentComplete + '%');
+
+		if(percentComplete >= diveData.descentRatio && percentComplete <= (100-diveData.ascentRatio)) {
+
+			console.log('--- ' + diveData.maxDepth);
+
+			return diveData.maxDepth;
+		}
+		else if(percentComplete < diveData.descentRatio) {
+
+			// (x1,y1) = (diveData.startingTime,diveData.startingDepth)
+			// (x2,y2) = (diveData.ascentRatio/100 * diveData.totalDiveTimeSeconds, diveData.maxDepth)
+
+			var slope = (diveData.maxDepth - diveData.startingDepth) / ((diveData.descentRatio/100 * diveData.totalDiveTimeSeconds) - diveData.startingTime)
+			var yIntercept = diveData.startingDepth - (slope * diveData.startingTime);
+			console.log(yIntercept);
+			console.log(slope);
+			console.log('\\/  ' + ((slope * time) + yIntercept));
+			return ((slope * time) + yIntercept);
+		}
+		else{
+
+			// (x1, y1) = ((100-diveData.ascentRatio) * diveData.totalDiveTimeSeconds, diveData.maxDepth)
+			// (x2, y2) = (diveData.totalDiveTimeSeconds, diveData.endingDepth)
+
+			var slope = (diveData.endingDepth - diveData.maxDepth) / (diveData.totalDiveTimeSeconds - (((100-diveData.ascentRatio)/100) * diveData.totalDiveTimeSeconds));
+			var yIntercept = diveData.endingDepth - (slope * diveData.totalDiveTimeSeconds);
+			console.log('/\\  ' + ((slope * time) + yIntercept));
+			return ((slope * time) + yIntercept);
+		}
+
+	}
+
 	
 	
 }

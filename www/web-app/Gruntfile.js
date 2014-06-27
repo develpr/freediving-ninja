@@ -21,7 +21,7 @@ module.exports = function(grunt) {
 				livereload: true
 			},
 			src: {
-				files: ['lib/*.js', 'scss/**/*.scss', 'js/app.js'],
+				files: ['lib/*.js', 'scss/**/*.scss', 'js/app.js', 'js/*.js'],
 				tasks: ['default']
 			}
 		},
@@ -47,6 +47,7 @@ module.exports = function(grunt) {
 				src: [
 					'js/amcharts.js',
 					'js/serial.js',
+					'js/sampleDive.js',
 					'js/app.js'					
 				],
 				dest: '../public/js/build/app.js'

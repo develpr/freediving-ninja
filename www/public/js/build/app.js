@@ -427,213 +427,168 @@ Math.ceil(this.timeDifference/b),d=this.periods;return this.timeDifference<b&&0<
 return AmCharts.getPeriodDuration(a.period,a.count)},checkPeriodChange:function(a,b,c,d,e){c=new Date(c);var f=new Date(d),l=this.firstDayOfWeek;d=b;"DD"==a&&(b=1);c=AmCharts.resetDateToMin(c,a,b,l).getTime();b=AmCharts.resetDateToMin(f,a,b,l).getTime();return"DD"==a&&"hh"!=e&&c-b<=AmCharts.getPeriodDuration(a,d)?!1:c!=b?!0:!1},generateDFObject:function(){this.dateFormatsObject={};var a;for(a=0;a<this.dateFormats.length;a++){var b=this.dateFormats[a];this.dateFormatsObject[b.period]=b.format}},xToIndex:function(a){var b=
 this.data,c=this.chart,d=c.rotate,e=this.stepWidth;this.parseDates&&!this.equalSpacing?(a=this.startTime+Math.round(a/e)-this.minDuration()/2,c=c.getClosestIndex(b,"time",a,!1,this.start,this.end+1)):(this.startOnAxis||(a-=e/2),c=this.start+Math.round(a/e));var c=AmCharts.fitToBounds(c,0,b.length-1),f;b[c]&&(f=b[c].x[this.id]);d?f>this.height+1&&c--:f>this.width+1&&c--;0>f&&c++;return c=AmCharts.fitToBounds(c,0,b.length-1)},dateToCoordinate:function(a){return this.parseDates&&!this.equalSpacing?(a.getTime()-
 this.startTime)*this.stepWidth:this.parseDates&&this.equalSpacing?(a=this.chart.getClosestIndex(this.data,"time",a.getTime(),!1,0,this.data.length-1),this.getCoordinate(a-this.start)):NaN},categoryToCoordinate:function(a){return this.chart?(a=this.chart.getCategoryIndexByValue(a),this.getCoordinate(a-this.start)):NaN},coordinateToDate:function(a){return this.equalSpacing?(a=this.xToIndex(a),new Date(this.data[a].time)):new Date(this.startTime+a/this.stepWidth)}});
+function SampleDive()
+{
+	var diveData = {};	
+	
+	this.generateRandomProfile = function(){
+		//random dive time between half a minute and 3.5 minutes
+		diveData.totalDiveTimeMinutes = (Math.random() * 3.5) + 0.5;
+		diveData.totalDiveTimeSeconds = Math.floor(60 * diveData.totalDiveTimeMinutes);
+		//How deep are we diving?
+		diveData.maxDepth = -1 * Math.floor((Math.random() * 50) + 20);
+		//We'll either have an "enjoyable" dive where we dive down not super deep, then swim around a bit, then come up
+		diveData.descentRatio = Math.floor((Math.random() * 30) + 10);
+		diveData.ascentRatio = diveData.descentRatio * 0.7;
+		diveData.bottomRatio = 100 - diveData.descentRatio - diveData.ascentRatio;
+		diveData.startingDepth = 0;
+		diveData.startingTime = 0;
+		diveData.endingDepth = 0;
+
+		//Or we'll do a "deep dive" where we spend all time on the descent/ascent
+		if (Math.random() < 0.3) {
+		    diveData.descentRatio = 60;
+		    diveData.ascentRatio = 38;
+		    diveData.bottomRatio = 2;
+		    diveData.maxDepth = diveData.maxDepth * 3;
+		}	
+	}
+	
+	this.getDiveData = function(){
+		
+		var empty = true;
+		for(var prop in diveData) {
+	        if(diveData.hasOwnProperty(prop))
+	            empty = false;
+	    }		
+		if(empty == true){
+			this.generateRandomProfile();
+		}
+				
+		diveData.points = this.getDivePoints();
+		
+		return diveData;
+		
+	}
+	
+	
+	this.getDivePoints = function(){
+		//add a few gentle starting points
+
+		//initial dive state
+		var diveState = { speed : -0.05, acceloration : -.1, depth:0 };
+		var times = [];
+		for (currentTime = 0; currentTime <= diveData.totalDiveTimeSeconds; currentTime += 1) {
+			
+			diveState.time = currentTime;			
+			diveState = this.calculateDivePoint(diveState);
+			
+		    times.push({
+				"time"	: diveState.time,
+		    	"depth" : diveState.depth
+		    });
+			
+		}
+		
+		return times;
+	}
+	
+	
+	this.calculateDivePoint = function (diveState) {
+    	
+		var previousDepth = diveState.depth;
+		var previousAcceleration = diveState.acceleration;
+		var previousSpeed = diveState.speed;
+		
+		var depth = this.currentEstimatedDepth(diveState.time);
+		var speed = 0;
+		var acceleration = 0;
+    
+	    return {
+	        "time": diveState.time,
+	        "depth": depth,
+			"speed": speed,
+			"acceleration":acceleration
+	    };
+	};
+
+	this.currentEstimatedDepth = function(time) {
+
+		var percentComplete = time / diveData.totalDiveTimeSeconds * 100;
+
+		console.log(percentComplete + '%');
+
+		if(percentComplete >= diveData.descentRatio && percentComplete <= (100-diveData.ascentRatio)) {
+
+			console.log('--- ' + diveData.maxDepth);
+
+			return diveData.maxDepth;
+		}
+		else if(percentComplete < diveData.descentRatio) {
+
+			// (x1,y1) = (diveData.startingTime,diveData.startingDepth)
+			// (x2,y2) = (diveData.ascentRatio/100 * diveData.totalDiveTimeSeconds, diveData.maxDepth)
+
+			var slope = (diveData.maxDepth - diveData.startingDepth) / ((diveData.descentRatio/100 * diveData.totalDiveTimeSeconds) - diveData.startingTime)
+			var yIntercept = diveData.startingDepth - (slope * diveData.startingTime);
+			console.log(yIntercept);
+			console.log(slope);
+			console.log('\\/  ' + ((slope * time) + yIntercept));
+			return ((slope * time) + yIntercept);
+		}
+		else{
+
+			// (x1, y1) = ((100-diveData.ascentRatio) * diveData.totalDiveTimeSeconds, diveData.maxDepth)
+			// (x2, y2) = (diveData.totalDiveTimeSeconds, diveData.endingDepth)
+
+			var slope = (diveData.endingDepth - diveData.maxDepth) / (diveData.totalDiveTimeSeconds - (((100-diveData.ascentRatio)/100) * diveData.totalDiveTimeSeconds));
+			var yIntercept = diveData.endingDepth - (slope * diveData.totalDiveTimeSeconds);
+			console.log('/\\  ' + ((slope * time) + yIntercept));
+			return ((slope * time) + yIntercept);
+		}
+
+	}
+
+	
+	
+}
+
 // Foundation JavaScript
 // Documentation can be found at: http://foundation.zurb.com/docs
 //$(document).foundation();
 
-var chartData = [{
-		        "year": "1950",
-		        "value": -0.307
-		    }, {
-		        "year": "1951",
-		        "value": -0.168
-		    }, {
-		        "year": "1952",
-		        "value": -0.073
-		    }, {
-		        "year": "1953",
-		        "value": -0.027
-		    }, {
-		        "year": "1954",
-		        "value": -0.251
-		    }, {
-		        "year": "1955",
-		        "value": -0.281
-		    }, {
-		        "year": "1956",
-		        "value": -0.348
-		    }, {
-		        "year": "1957",
-		        "value": -0.074
-		    }, {
-		        "year": "1958",
-		        "value": -0.011
-		    }, {
-		        "year": "1959",
-		        "value": -0.074
-		    }, {
-		        "year": "1960",
-		        "value": -0.124
-		    }, {
-		        "year": "1961",
-		        "value": -0.024
-		    }, {
-		        "year": "1962",
-		        "value": -0.022
-		    }, {
-		        "year": "1963",
-		        "value": 0
-		    }, {
-		        "year": "1964",
-		        "value": -0.296
-		    }, {
-		        "year": "1965",
-		        "value": -0.217
-		    }, {
-		        "year": "1966",
-		        "value": -0.147
-		    }, {
-		        "year": "1967",
-		        "value": -0.15
-		    }, {
-		        "year": "1968",
-		        "value": -0.16
-		    }, {
-		        "year": "1969",
-		        "value": -0.011
-		    }, {
-		        "year": "1970",
-		        "value": -0.068
-		    }, {
-		        "year": "1971",
-		        "value": -0.19
-		    }, {
-		        "year": "1972",
-		        "value": -0.056
-		    }, {
-		        "year": "1973",
-		        "value": 0.077
-		    }, {
-		        "year": "1974",
-		        "value": -0.213
-		    }, {
-		        "year": "1975",
-		        "value": -0.17
-		    }, {
-		        "year": "1976",
-		        "value": -0.254
-		    }, {
-		        "year": "1977",
-		        "value": 0.019
-		    }, {
-		        "year": "1978",
-		        "value": -0.063
-		    }, {
-		        "year": "1979",
-		        "value": 0.05
-		    }, {
-		        "year": "1980",
-		        "value": 0.077
-		    }, {
-		        "year": "1981",
-		        "value": 0.12
-		    }, {
-		        "year": "1982",
-		        "value": 0.011
-		    }, {
-		        "year": "1983",
-		        "value": 0.177
-		    }, {
-		        "year": "1984",
-		        "value": -0.021
-		    }, {
-		        "year": "1985",
-		        "value": -0.037
-		    }, {
-		        "year": "1986",
-		        "value": 0.03
-		    }, {
-		        "year": "1987",
-		        "value": 0.179
-		    }, {
-		        "year": "1988",
-		        "value": 0.18
-		    }, {
-		        "year": "1989",
-		        "value": 0.104
-		    }, {
-		        "year": "1990",
-		        "value": 0.255
-		    }, {
-		        "year": "1991",
-		        "value": 0.21
-		    }, {
-		        "year": "1992",
-		        "value": 0.065
-		    }, {
-		        "year": "1993",
-		        "value": 0.11
-		    }, {
-		        "year": "1994",
-		        "value": 0.172
-		    }, {
-		        "year": "1995",
-		        "value": 0.269
-		    }, {
-		        "year": "1996",
-		        "value": 0.141
-		    }, {
-		        "year": "1997",
-		        "value": 0.353
-		    }, {
-		        "year": "1998",
-		        "value": 0.548
-		    }, {
-		        "year": "1999",
-		        "value": 0.298
-		    }, {
-		        "year": "2000",
-		        "value": 0.267
-		    }, {
-		        "year": "2001",
-		        "value": 0.411
-		    }, {
-		        "year": "2002",
-		        "value": 0.462
-		    }, {
-		        "year": "2003",
-		        "value": 0.47
-		    }, {
-		        "year": "2004",
-		        "value": 0.445
-		    }, {
-		        "year": "2005",
-		        "value": 0.47
-		    }];
+var sampleDive = new SampleDive();
 
+var chart = AmCharts.makeChart("chartdiv", {
+	"type": "serial",
+	"theme": "none",
+	"marginLeft": 0,
+	"marginRight": 0,
+	"marginTop": 0,
+	"marginBottom": 0,
+	"dataProvider": sampleDive.getDiveData().points,
+	"valueAxes": [{
+		"axisAlpha": 0,
+		"gridAlpha": 0
+	}],
+	"graphs": [{
+		"fillAlphas": 1,
+		"lineColor": "#289eaf",
+		"negativeFillColors": "#289eaf",
+		"negativeLineColor": "#289eaf",
+		"showBalloon": false,
+		"type": "smoothedLine",
+		"valueField": "depth"
+	}],
+	"marginTop": 0,
+	"marginRight": 0,
+	"marginLeft": 0,
+	"marginBottom": 0,
+	"autoMargins": false,
+	"categoryField": "time",
+	"categoryAxis": {
+		"axisAlpha": 0,
+		"gridAlpha": 0
+	}
+});
 
-
-
-		var chart = AmCharts.makeChart("chartdiv", {
-		    "type": "serial",
-		    "theme": "none",
-		    "marginLeft": 0,
-			"marginRight": 0,
-			"marginTop": 0,
-			"marginBottom": 0,
-		    "dataProvider": chartData,
-		    "valueAxes": [{
-				"axisAlpha": 0,
-				"gridAlpha": 0
-		    }],
-			"graphs": [{
-		        "fillAlphas": 1,
-		        "lineColor": "#ffbf63",
-		        "negativeFillColors": "#289eaf",
-		        "negativeLineColor": "#289eaf",
-		        "showBalloon": false,
-		        "type": "smoothedLine",
-		        "valueField": "value"
-		    }],
-		    "marginTop": 0,
-		    "marginRight": 0,
-		    "marginLeft": 0,
-		    "marginBottom": 0,
-		    "autoMargins": false,
-		    "categoryField": "year",
-		    "categoryAxis": {
-		        "axisAlpha": 0,
-		        "gridAlpha": 0
-		    }
-		});
-	

@@ -38,7 +38,7 @@
 	</form>
 	
 	<div class="row">
-		<div id="chartdiv" class="large-7 columns small-centered" style="height:300px;"></div>
+		<div id="chartdiv" class="large-7 columns small-centered" style="height:250px;"></div>
 	</div>
 
 	<div class="row">
