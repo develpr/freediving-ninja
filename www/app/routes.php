@@ -16,6 +16,16 @@ Route::get('/', function()
 	return View::make('hello');
 });
 
+Route::get('/dive', function(){
+
+    $dive = new Develpr\Freediving\Dive;
+
+    $diveSimulator = new Develpr\Freediving\DiveSimulator;
+
+    var_dump($diveSimulator->getDiveData());
+
+});
+
 
 Route::post('/notify-me', function(){
 
