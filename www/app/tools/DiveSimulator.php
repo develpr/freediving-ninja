@@ -175,7 +175,7 @@ class DiveSimulator {
 
 			return (($slope * $time) + $yIntercept);
 		}
-        else{
+        else {
 
             // (x1, y1) = ((100-$this->diveData->ascentRatio) * $this->diveData->totalDiveTimeSeconds, $this->diveData->maxDepth)
             // (x2, y2) = ($this->diveData->totalDiveTimeSeconds, $this->diveData->endingDepth)
